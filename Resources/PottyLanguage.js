@@ -1,0 +1,1 @@
+module.exports = {collection: ["bitch", "ass", "asshole", "fuck", "damn", "cunt", "shit", "nigger", "nigga", "fuckhead", "fuckoff", "shitfuck", "fuckyfuck"]}
