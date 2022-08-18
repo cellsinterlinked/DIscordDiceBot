@@ -12,6 +12,7 @@ const {
 } = GatewayIntentBits;
 
 const HitRoll = require("./Functions/HitRoll");
+const RegRoll = require("./Functions/RegRoll");
 const PottyWords = require("./Resources/PottyLanguage");
 
 const prefix = "!";
@@ -66,8 +67,79 @@ client.on("messageCreate", (message) => {
     );
   }
 
-  if (command === "roll" && args.length === 6) {
-    let result = HitRoll(args[0], args[1], args[2], args[3], args[4], args[5]);
+
+  if (command === "roll") {
+    if (args.length < 4) {
+      message.channel.send(`${message.author.tag.slice(0, -5)} please pass all required parameters`)
+      return
+    }
+    let diceSplit = args[0].toLowerCase().split("d")
+
+    let result = RegRoll(parseInt(diceSplit[1]), parseInt(diceSplit[0]), args[1], args[2], args[3]);
+    const embed = new EmbedBuilder()
+        .setTitle(`Roll Result`)
+        .setDescription(`${args[0]}`)
+        .setColor(0x18e1ee)
+        .setAuthor({
+          iconUrl: message.author.avatarURL,
+          name: message.author.tag.slice(0, -5),
+        })
+        .setThumbnail(
+          "https://s1.1zoom.me/big0/942/Warriors_Fallout_4_Power_Armor_Brotherhood_of_536430_991x1024.jpg"
+        )
+        .addFields([
+          {
+            name: `Target`,
+            value: `${result.targ}`,
+            inline: false,
+          },
+          {
+            name: `Critical Range`,
+            value: `${result.critR}`,
+            inline: false,
+          },
+          {
+            name: `Complication Range`,
+            value: `${result.compR}`,
+            inline: false,
+          },
+          {
+            name: `Raw Result`,
+            value: `${result.res}`,
+            inline: false,
+          },
+        
+          {
+            name: `Success(es)`,
+            value: `${result.succ}`,
+            inline: false,
+          },
+          {
+            name: `Complications`,
+            value: `${result.comps}`,
+            inline: false,
+          },
+        ]);
+
+      message.channel.send({ embeds: [embed] });
+
+  }
+
+
+
+
+
+
+
+  if (command === "attack") {
+    
+    if (args.length < 5) {
+      message.channel.send(`${message.author.tag.slice(0, -5)} please pass all required parameters`)
+      return
+    }
+    let diceSplit = args[0].toLowerCase().split("d")
+
+    let result = HitRoll(parseInt(diceSplit[1]), parseInt(diceSplit[0]), args[1], args[2], args[3], args[4]);
 
     if (result === "error") {
       message.channel.send("Try inputting that again, little buddy");
@@ -75,7 +147,7 @@ client.on("messageCreate", (message) => {
     } else {
       const embed = new EmbedBuilder()
         .setTitle(`Roll Result`)
-        .setDescription(`${args[1]}d${args[0]}`)
+        .setDescription(`${args[0]}`)
         .setColor(0x18e1ee)
         .setAuthor({
           iconUrl: message.author.avatarURL,
@@ -108,6 +180,16 @@ client.on("messageCreate", (message) => {
           {
             name: `Hit Location`,
             value: `${result.hitloc}`,
+            inline: false,
+          },
+          {
+            name: `Success(es)`,
+            value: `${result.succ}`,
+            inline: false,
+          },
+          {
+            name: `Complications`,
+            value: `${result.comps}`,
             inline: false,
           },
         ]);

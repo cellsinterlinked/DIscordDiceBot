@@ -7,7 +7,8 @@ module.exports = function (
   creatureType
 ) {
   const types = ["humanoids", "misterHandy", "quadruped", "flying"];
-  if (sides > 20 || diceNum > 4 || types.includes(creatureType) === false) {
+  console.log(sides, diceNum)
+  if (sides > 20 || diceNum > 5 || types.includes(creatureType) === false) {
     return "error";
   }
 
@@ -31,8 +32,25 @@ module.exports = function (
     ],
     flying: ["Head", "Torso", "Left Wing", "Right Wing", "Legs", "Legs"],
   };
+  let complications = 0
+  let success = 0
 
-  let result = (1 + Math.floor(Math.random() * sides)) * diceNum;
+  let resultArr = []
+  for(let i = 1; i <= diceNum; i++) {
+
+    let current = 1 + Math.floor(Math.random() * sides)
+    resultArr.push(current)
+    
+    if (current <= critRange) {
+      success = success + 2
+    } else if (current <= target) {
+      success = success + 1 
+    } else if (current >= compRange) {
+      complications = complications + 1
+    }
+
+  }
+
 
   let locationPerc = 1 + Math.floor(Math.random() * 20);
 
@@ -51,12 +69,17 @@ module.exports = function (
     hitLocation = locations[creatureType][5];
   }
 
+  let result = resultArr.join(",")
+
   let bigResult = {
     res: result,
     hitloc: hitLocation,
     targ: target,
     critR: critRange,
     compR: compRange,
+    comps: complications,
+    succ: success
+    
   };
 
   return bigResult;
