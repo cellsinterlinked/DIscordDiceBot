@@ -6,7 +6,7 @@ module.exports = function (
   compRange,
   creatureType
 ) {
-  const types = ["humanoids", "misterHandy", "quadruped", "flying"];
+  const types = ["humanoids", "misterhandy", "quadruped", "flying"];
   console.log(sides, diceNum)
   if (sides > 20 || diceNum > 5 || types.includes(creatureType) === false) {
     return "error";
@@ -21,7 +21,7 @@ module.exports = function (
       "Left Leg",
       "Right Leg",
     ],
-    minsterHandy: ["Optics", "Main Body", "Arm1", "Arm2", "Arm3", "Thruster"],
+    misterhandy: ["Optics", "Main Body", "Arm1", "Arm2", "Arm3", "Thruster"],
     quadruped: [
       "Head",
       "Torso",
